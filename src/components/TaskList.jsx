@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 TaskList.propTypes = {
   tasks: PropTypes.array.isRequired,
-  setTasks: PropTypes.func.isRequired,
 };
 
 export default function TaskList({ tasks }) {
