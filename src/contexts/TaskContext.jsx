@@ -1,6 +1,5 @@
 import { createContext, useReducer } from "react";
 import PropTypes from "prop-types";
-const TaskContext = createContext();
 
 const initialState = [
   {
@@ -38,10 +37,17 @@ const taskReducer = (state, action) => {
           ? { ...task, completed: !task.completed }
           : task
       );
+    case "EDIT_TASK":
+      return state.map((task) => {
+        //here the payload is the task
+        task.id === action.payload.id ? action.payload : task;
+      });
     default:
       return state;
   }
 };
+
+const TaskContext = createContext();
 
 const TaskProvider = ({ children }) => {
   const [tasks, dispatch] = useReducer(taskReducer, initialState);
