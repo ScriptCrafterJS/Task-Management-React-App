@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import PropTypes from "prop-types";
 
 const initialState = [
@@ -38,10 +38,10 @@ const taskReducer = (state, action) => {
           : task
       );
     case "EDIT_TASK":
-      return state.map((task) => {
-        //here the payload is the task
-        task.id === action.payload.id ? action.payload : task;
-      });
+      return state.map((task) =>
+        //here the payload is a task object
+        task.id === action.payload.id ? action.payload : task
+      );
     default:
       return state;
   }
@@ -51,9 +51,27 @@ const TaskContext = createContext();
 
 const TaskProvider = ({ children }) => {
   const [tasks, dispatch] = useReducer(taskReducer, initialState);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [searchedTerm, setSearchedTerm] = useState([]);
+
+  function toggleModal() {
+    setModalIsOpen(!modalIsOpen);
+  }
 
   return (
-    <TaskContext.Provider value={{ tasks, dispatch }}>
+    <TaskContext.Provider
+      value={{
+        tasks,
+        dispatch,
+        modalIsOpen,
+        toggleModal,
+        taskToEdit,
+        setTaskToEdit,
+        searchedTerm,
+        setSearchedTerm,
+      }}
+    >
       {children}
     </TaskContext.Provider>
   );

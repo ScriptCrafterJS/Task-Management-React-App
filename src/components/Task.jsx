@@ -9,7 +9,7 @@ Task.propTypes = {
 };
 export default function Task({ task }) {
   const [completed, setCompleted] = useState(task.completed);
-  const { dispatch } = useContext(TaskContext);
+  const { dispatch, toggleModal, setTaskToEdit } = useContext(TaskContext);
   return (
     <div className="p-3 bg-white rounded shadow-md">
       <header className="flex justify-between">
@@ -29,6 +29,7 @@ export default function Task({ task }) {
       <footer className="flex items-center justify-between">
         <label className="flex items-center">
           <input
+            id="task-status"
             type="checkbox"
             checked={completed}
             onChange={() => {
@@ -42,23 +43,28 @@ export default function Task({ task }) {
         </label>
         <div className="flex space-x-2">
           <button
+            id="edit-task"
             type="button"
-            className="px-4 py-1 text-sm bg-blue-100 text-blue-600 rounded-full flex items-center gap-1"
+            className="px-4 py-1 text-sm bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-full flex items-center gap-1"
             aria-label="Edit Task Title and Description"
+            onClick={() => {
+              toggleModal();
+              setTaskToEdit(task);
+            }}
           >
             <GoPencil />
             Edit
           </button>
           <button
             type="button"
-            className="px-2 py-1 text-sm bg-red-100 text-white rounded-full"
+            className="px-2 py-1 text-sm bg-red-100 hover:bg-red-200 text-red-500 rounded-full"
             aria-label="Delete Task Title"
             onClick={() => {
               dispatch({ type: "DELETE_TASK", payload: task.id });
               toast.success("Task Deleted");
             }}
           >
-            <HiOutlineTrash style={{ color: "red" }} />
+            <HiOutlineTrash />
           </button>
         </div>
       </footer>

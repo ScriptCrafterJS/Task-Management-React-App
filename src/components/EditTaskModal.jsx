@@ -1,40 +1,46 @@
 import { useContext, useState } from "react";
 import { TaskContext } from "../contexts/TaskContext";
 import { IoMdClose } from "react-icons/io";
+import toast from "react-hot-toast";
 export default function EditTaskModal() {
-  const { dispatch } = useContext(TaskContext);
-  const [task, setTask] = useState(taskToEdit);
+  const { dispatch, toggleModal, taskToEdit } = useContext(TaskContext);
+  const [title, setTitle] = useState(taskToEdit.title);
+  const [description, setDescription] = useState(taskToEdit.description);
+  const [dueDate, setDueDate] = useState(taskToEdit.dueDate);
+  const task = { title, description, dueDate, id: taskToEdit.id };
+
   return (
-    <div className="p-4 h-96 w-96 bg-blue-500 shadow-md absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
-      <button className="mb-5" onClick={() => setIsEditModalOpen(false)}>
+    <div className="z-10 p-4 h-5/6  w-1/2 bg-blue-500 shadow-md absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2">
+      <button className="mb-5" onClick={() => toggleModal()}>
         <IoMdClose className="text-3xl text-white" />
       </button>
       <form
         className="flex flex-col gap-4"
         onSubmit={(e) => {
           e.preventDefault();
-          dispatch(task, "EDIT_TASK");
+          dispatch({ payload: task, type: "EDIT_TASK" });
+          toast.success("Task updated successfully");
         }}
       >
         <input
           id="task-title"
           type="text"
           value={task.title}
-          onChange={(e) => setTask({ ...task, title: e.target.value })}
+          onChange={(e) => setTitle(e.target.value)}
           className="p-2 border border-gray-300 rounded mb-2 w-full outline-none"
         />
         <input
           id="task-description"
-          type="text"
+          type="text-area"
           value={task.description}
-          onChange={(e) => setTask({ ...task, description: e.target.value })}
+          onChange={(e) => setDescription(e.target.value)}
           className="p-2 border border-gray-300 rounded mb-2 w-full outline-none"
         />
         <input
           id="task-due-date"
-          type="text"
+          type="date"
           value={task.dueDate}
-          onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
+          onChange={(e) => setDueDate(e.target.value)}
           className="p-2 border border-gray-300 rounded mb-2 w-full outline-none"
         />
         <button

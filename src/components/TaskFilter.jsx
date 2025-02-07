@@ -1,5 +1,6 @@
 import { BiSearchAlt } from "react-icons/bi";
-import { useState } from "react";
+import { useContext } from "react";
+import { TaskContext } from "../contexts/TaskContext";
 import PropTypes from "prop-types";
 
 TaskFilter.propTypes = {
@@ -7,7 +8,7 @@ TaskFilter.propTypes = {
   filterTasks: PropTypes.func.isRequired,
 };
 export default function TaskFilter({ isfiltered, filterTasks }) {
-  const [search, setSearch] = useState("");
+  const { searchedTerm, setSearchedTerm } = useContext(TaskContext);
   return (
     <>
       <div className="relative">
@@ -15,8 +16,8 @@ export default function TaskFilter({ isfiltered, filterTasks }) {
           type="text"
           placeholder="search tasks by title or description"
           className="p-2 border border-gray-300 rounded mb-2 w-full outline-none pl-10"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchedTerm}
+          onChange={(e) => setSearchedTerm(e.target.value)}
         />
         <BiSearchAlt className="absolute left-3 top-3 transform" />
       </div>

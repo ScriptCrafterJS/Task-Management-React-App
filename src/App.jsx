@@ -4,16 +4,28 @@ import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import { useState, useContext, useMemo } from "react";
 import { TaskContext } from "./contexts/TaskContext";
+import EditTaskModal from "./components/EditTaskModal";
 
 function App() {
   const [isfiltered, setIsFiltered] = useState(false);
-  const { tasks } = useContext(TaskContext);
+  const { tasks, modalIsOpen, searchedTerm } = useContext(TaskContext);
+
+  const searchedTasks = useMemo(
+    () =>
+      tasks.filter(
+        (task) =>
+          task.title.includes(searchedTerm) ||
+          task.description.includes(searchedTerm)
+      ),
+    [tasks, searchedTerm]
+  );
+
   const sortedTasks = useMemo(
     () =>
-      tasks.sort((a, b) =>
+      searchedTasks.sort((a, b) =>
         !isfiltered ? a.completed - b.completed : b.completed - a.completed
       ),
-    [tasks, isfiltered]
+    [searchedTasks, isfiltered]
   );
 
   function filterTasks(isfiltered) {
@@ -27,6 +39,7 @@ function App() {
         </h1>
       </header>
       <main className="flex flex-grow gap-9">
+        {modalIsOpen && <EditTaskModal />}
         <aside className="flex flex-col justify-between basis-1/3">
           <TaskFilter filterTasks={filterTasks} isfiltered={isfiltered} />
           <TaskForm />
