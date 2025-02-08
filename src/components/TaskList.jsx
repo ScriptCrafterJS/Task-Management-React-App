@@ -7,7 +7,7 @@ TaskList.propTypes = {
 
 export default function TaskList({ tasks }) {
   return (
-    <div className=" basis-2/3 grid grid-cols-2 gap-4 auto-rows-min max-h-[80vh] overflow-y-auto">
+    <div className="lg:basis-2/3 w-full flex flex-col sm:grid sm:grid-cols-2 gap-4 sm:auto-rows-min max-h-[80vh] overflow-y-auto">
       {tasks.map((task) => {
         return <Task key={task.id} task={task} />;
       })}
