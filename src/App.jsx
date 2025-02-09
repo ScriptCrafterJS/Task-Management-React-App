@@ -5,11 +5,12 @@ import TaskList from "./components/TaskList";
 import { useState, useContext, useMemo } from "react";
 import { TaskContext } from "./contexts/TaskContext";
 import EditTaskModal from "./components/EditTaskModal";
-import { IoIosAdd } from "react-icons/io";
+import { IoIosAdd, IoMdClose } from "react-icons/io";
 
 function App() {
   const [isfiltered, setIsFiltered] = useState(false);
   const { tasks, modalIsOpen, searchedTerm } = useContext(TaskContext);
+  const [isOpenedFormModal, setIsOpenedFormModal] = useState(false);
 
   const searchedTasks = useMemo(
     () =>
@@ -41,14 +42,25 @@ function App() {
       </header>
       <main className="flex flex-grow gap-9">
         {modalIsOpen && <EditTaskModal />}
-        <aside className="flex flex-col justify-between basis-1/3 hidden lg:block">
+        <aside className="flex flex-col justify-between basis-1/3 hidden lg:flex">
           <TaskFilter filterTasks={filterTasks} isfiltered={isfiltered} />
           <TaskForm />
         </aside>
         <TaskList tasks={sortedTasks} />
-        <button className="fixed bottom-5 right-5 bg-white text-blue-600 p-3 rounded-full shadow-lg">
+        <button
+          onClick={() => setIsOpenedFormModal(true)}
+          className="fixed bottom-5 right-5 bg-white text-blue-600 p-3 rounded-full shadow-lg lg:hidden"
+        >
           <IoIosAdd className="text-3xl " />
         </button>
+        {isOpenedFormModal && (
+          <div className="gap-2 flex flex-col fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <button onClick={() => setIsOpenedFormModal(false)}>
+              <IoMdClose className="text-3xl text-white" />
+            </button>
+            <TaskForm />
+          </div>
+        )}
       </main>
       <Toaster
         gutter={8}

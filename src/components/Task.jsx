@@ -13,7 +13,7 @@ export default function Task({ task }) {
   const { dispatch, toggleModal, setTaskToEdit, tasks } =
     useContext(TaskContext);
   return (
-    <div className="p-3 bg-white rounded shadow-md">
+    <div className="p-3 bg-white rounded shadow-md flex flex-col">
       <header className="flex justify-between">
         <h2>{task.title}</h2>
         {task.completed ? (
@@ -26,7 +26,7 @@ export default function Task({ task }) {
           </span>
         )}
       </header>
-      <p className="text-sm text-gray-600 mt-2">{task.description}</p>
+      <p className="text-sm text-gray-600 mt-2 grow">{task.description}</p>
       <time className="block text-xs text-black my-5">Due: {task.dueDate}</time>
       <footer className="flex items-center justify-between">
         <label className="flex items-center">
