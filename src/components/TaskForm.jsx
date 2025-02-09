@@ -4,6 +4,8 @@ import { FaPenToSquare } from "react-icons/fa6";
 import { useState } from "react";
 import { useContext } from "react";
 import { TaskContext } from "../contexts/TaskContext";
+import toast from "react-hot-toast";
+// import { saveTasksToLocalStorage } from "../../utils/saveTasksToLocalStorage.js";
 export default function TaskForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -22,6 +24,10 @@ export default function TaskForm() {
         completed: false,
       },
     });
+    toast.success("New Task Added!");
+    setTitle("");
+    setDescription("");
+    setDueDate("");
   }
   return (
     <form className="flex flex-col">

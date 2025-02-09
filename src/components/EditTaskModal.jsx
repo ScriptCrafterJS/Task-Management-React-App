@@ -2,8 +2,9 @@ import { useContext, useState } from "react";
 import { TaskContext } from "../contexts/TaskContext";
 import { IoMdClose } from "react-icons/io";
 import toast from "react-hot-toast";
+import { saveTasksToLocalStorage } from "../../utils/saveTasksToLocalStorage.js";
 export default function EditTaskModal() {
-  const { dispatch, toggleModal, taskToEdit } = useContext(TaskContext);
+  const { dispatch, toggleModal, taskToEdit, tasks } = useContext(TaskContext);
   const [title, setTitle] = useState(taskToEdit.title);
   const [description, setDescription] = useState(taskToEdit.description);
   const [dueDate, setDueDate] = useState(taskToEdit.dueDate);
@@ -19,6 +20,7 @@ export default function EditTaskModal() {
         onSubmit={(e) => {
           e.preventDefault();
           dispatch({ payload: task, type: "EDIT_TASK" });
+          saveTasksToLocalStorage(tasks);
           toast.success("Task updated successfully");
         }}
       >

@@ -4,14 +4,16 @@ import { HiOutlineTrash } from "react-icons/hi";
 import { useState, useContext } from "react";
 import { TaskContext } from "../contexts/TaskContext";
 import toast from "react-hot-toast";
+import { saveTasksToLocalStorage } from "../../utils/saveTasksToLocalStorage.js";
 Task.propTypes = {
   task: PropTypes.object.isRequired,
 };
 export default function Task({ task }) {
   const [completed, setCompleted] = useState(task.completed);
-  const { dispatch, toggleModal, setTaskToEdit } = useContext(TaskContext);
+  const { dispatch, toggleModal, setTaskToEdit, tasks } =
+    useContext(TaskContext);
   return (
-    <div className="p-3 bg-white rounded shadow-md">
+    <div className="p-3 bg-white rounded shadow-md flex flex-col">
       <header className="flex justify-between">
         <h2>{task.title}</h2>
         {task.completed ? (
@@ -24,7 +26,7 @@ export default function Task({ task }) {
           </span>
         )}
       </header>
-      <p className="text-sm text-gray-600 mt-2">{task.description}</p>
+      <p className="text-sm text-gray-600 mt-2 grow">{task.description}</p>
       <time className="block text-xs text-black my-5">Due: {task.dueDate}</time>
       <footer className="flex items-center justify-between">
         <label className="flex items-center">
@@ -35,6 +37,7 @@ export default function Task({ task }) {
             onChange={() => {
               setCompleted(!completed);
               dispatch({ type: "TOGGLE_STATUS", payload: task.id });
+              saveTasksToLocalStorage(tasks);
             }}
             className="mr-2 scale-150"
             aria-label="Mark Task Title as done"
@@ -61,6 +64,7 @@ export default function Task({ task }) {
             aria-label="Delete Task Title"
             onClick={() => {
               dispatch({ type: "DELETE_TASK", payload: task.id });
+              saveTasksToLocalStorage(tasks);
               toast.success("Task Deleted");
             }}
           >

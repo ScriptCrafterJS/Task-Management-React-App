@@ -13,9 +13,10 @@ export default function TaskFilter({ isfiltered, filterTasks }) {
     <>
       <div className="relative">
         <input
+          id="search"
           type="text"
           placeholder="search tasks by title or description"
-          className="p-2 border border-gray-300 rounded mb-2 w-full outline-none pl-10"
+          className="p-2 border border-gray-300 rounded w-full outline-none pl-10"
           value={searchedTerm}
           onChange={(e) => setSearchedTerm(e.target.value)}
         />
